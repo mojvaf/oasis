@@ -5,8 +5,6 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createEditCabin } from "../../services/apiCabins";
 import { useCreateCabin } from "./useCreateCabin";
 import { useEditCabin } from "./useEditCabin";
 
@@ -62,7 +60,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
-
+  // from form package
   const { register, handleSubmit, reset, getValues, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });

@@ -4,7 +4,6 @@ import { useCabins } from "./useCabins";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import { useSearchParams } from "react-router-dom";
-import { ca } from "date-fns/locale";
 
 function CabinTable() {
   const { isLoading, cabins } = useCabins();

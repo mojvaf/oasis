@@ -56,7 +56,7 @@ function BookingRow({
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
-
+      <p>{guestName}</p>
       <Stacked>
         <span>
           {isToday(new Date(startDate))

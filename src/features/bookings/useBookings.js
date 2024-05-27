@@ -15,15 +15,15 @@ export function useBookings() {
 
   //sort
   const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
-  const [filed, direction] = sortByRaw.split("-");
-  const sortBy = { filed, direction };
+  const [field, direction] = sortByRaw.split("-");
+  const sortBy = { field, direction };
   const {
     isLoading,
     data: bookings,
     error,
   } = useQuery({
     queryKey: ["bookings", filter, sortBy],
-    queryFn: () => getBookings({ filter }),
+    queryFn: () => getBookings({ filter, sortBy }),
   });
 
   return { isLoading, error, bookings };

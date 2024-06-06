@@ -5,9 +5,9 @@ function DashboardFilter() {
     <Filter
       filterField="last"
       options={[
-        { value: "1", label: "Last 1 day" },
-        { value: "3", label: "Last 3 days" },
+        { value: "3", label: "Last 3 day" },
         { value: "7", label: "Last 7 days" },
+        { value: "10", label: "Last 10 days" },
       ]}
     />
   );

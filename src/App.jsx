@@ -10,10 +10,10 @@ import Cabins from "./pages/Cabins";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Account from "./pages/Account";
+import Menu from "./pages/Menu";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./ui/AppLayout";
-import Conut from "./Conut";
 import Checkin from "./pages/Checkin";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import { DarkModeProvider } from "./context/DarkModeContext";
@@ -43,13 +43,13 @@ function App() {
               }
             >
               <Route index element={<Navigate replace to="dashboard" />} />
-              <Route path="dashboard" element={<Conut />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="bookings" element={<Bookings />} />
               <Route path="bookings/:bookingId" element={<Booking />} />
               <Route path="checkin/:bookingId" element={<Checkin />} />
               <Route path="cabins" element={<Cabins />} />
               <Route path="users" element={<Users />} />
+              <Route path="menu" element={<Menu />} />
               <Route path="settings" element={<Settings />} />
               <Route path="account" element={<Account />} />
             </Route>

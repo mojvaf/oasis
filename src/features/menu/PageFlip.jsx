@@ -1,75 +1,102 @@
-import React, { useEffect, useRef } from "react";
-import { HTMLFlipBook } from "page-flip";
-import styled from "styled-components";
+import React, { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import HTMLFlipBook from "react-pageflip";
+import Button from "../../ui/Button";
+// eslint-disable-next-line react/display-name
+const PageCover = React.forwardRef((props, ref) => {
+  return (
+    <div className="bg-gray-400" ref={ref} data-density="hard">
+      <div className="page-content">
+        <h2>Menu</h2>
+      </div>
+    </div>
+  );
+});
 
-const BookContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-`;
-
-const PageFlipBook = styled.div`
-  width: 300px;
-  height: 500px;
-`;
-
-const Page = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background: white;
-  border: 1px solid #ccc;
-`;
-
-const PageContent = styled.div`
-  padding: 20px;
-  font-size: 18px;
-`;
+// eslint-disable-next-line react/display-name
+const Page = React.forwardRef((props, ref) => {
+  return (
+    <div className="page" ref={ref}>
+      <div className="page-content">
+        <h2 className="page-header">Page header - {props.number}</h2>
+        <div className="page-image"></div>
+        <div className="page-text">{props.children}</div>
+        <div className="page-footer">{props.number + 1}</div>
+      </div>
+    </div>
+  );
+});
 
 const PageFlip = () => {
-  const bookRef = useRef(null);
-  const pages = [
-    { id: 1, content: "Page 1 content" },
-    { id: 2, content: "Page 2 content" },
-    { id: 3, content: "Page 3 content" },
-    { id: 4, content: "Page 4 content" },
-  ];
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const [orientation, setOrientation] = useState("");
+  const [state, setState] = useState("");
+  const flipBook = useRef(null);
 
   useEffect(() => {
-    if (bookRef.current) {
-      const book = new PageFlip(bookRef.current, {
-        width: 300,
-        height: 500,
-        maxShadowOpacity: 0.5,
-        showCover: true,
-        mobileScrollSupport: false,
-      });
-
-      pages.forEach((page) => {
-        const pageElement = document.createElement("div");
-        pageElement.innerHTML = `<div class="page-content">${page.content}</div>`;
-        book.loadFromHTML([pageElement]);
-      });
-
-      return () => {
-        book.destroy();
-      };
+    if (flipBook.current) {
+      setTotalPage(flipBook.current.pageFlip());
     }
-  }, [pages]);
+  }, []);
+
+  const nextButtonClick = () => {
+    flipBook.current.pageFlip().flipNext();
+  };
+
+  const prevButtonClick = () => {
+    flipBook.current.pageFlip().flipPrev();
+  };
+
+  const onPage = (e) => {
+    setPage(e.data);
+  };
+
+  const onChangeOrientation = (e) => {
+    setOrientation(e.data);
+  };
+
+  const onChangeState = (e) => {
+    setState(e.data);
+  };
 
   return (
-    <BookContainer>
-      <PageFlipBook ref={bookRef}>
-        {pages.map((page) => (
-          <Page key={page.id}>
-            <PageContent>{page.content}</PageContent>
-          </Page>
-        ))}
-      </PageFlipBook>
-    </BookContainer>
+    <>
+      <HTMLFlipBook
+        width={30}
+        height={50}
+        size="stretch"
+        minWidth={315}
+        maxWidth={100}
+        minHeight={400}
+        maxHeight={153}
+        maxShadowOpacity={0.5}
+        showCover={true}
+        mobileScrollSupport={true}
+        onFlip={onPage}
+        onChangeOrientation={onChangeOrientation}
+        onChangeState={onChangeState}
+        className="demo-book"
+        ref={flipBook}
+      >
+        <PageCover>BOOK TITLE</PageCover>
+        <Page number={1}>Lorem ipsum...</Page>
+        <Page number={2}>Lorem ipsum...</Page>
+        {/* ... */}
+        <PageCover>THE END</PageCover>
+      </HTMLFlipBook>
+      <div>
+        <div>
+          <Button type="button" onClick={prevButtonClick}>
+            Previous page
+          </Button>
+          <span>{"   "}</span>
+          <Button type="button" onClick={nextButtonClick}>
+            Next page
+          </Button>
+        </div>
+      </div>
+    </>
   );
 };
 

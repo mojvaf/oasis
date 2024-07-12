@@ -6,10 +6,8 @@ import PageFlip from "../features/menu/PageFlip";
 const Menu = () => {
   return (
     <>
-      <Row type="horizontal">
-        <Heading as="h1">Menu</Heading>
-        <PageFlip />
-      </Row>
+      <Heading as="h1">The Wild Oasis menu</Heading>
+      <PageFlip />
     </>
   );
 };

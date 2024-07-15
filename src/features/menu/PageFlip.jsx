@@ -1,17 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import HTMLFlipBook from "react-pageflip";
 import Button from "../../ui/Button";
-// eslint-disable-next-line react/display-name
-const PageCover = React.forwardRef((props, ref) => {
-  return (
-    <div className="bg-gray-400" ref={ref} data-density="hard">
-      <div className="page-content">
-        <h2>Menu</h2>
-      </div>
-    </div>
-  );
-});
+import PageCover from "./PageCover";
+import EndPage from "./EndPage";
 
 // eslint-disable-next-line react/display-name
 const Page = React.forwardRef((props, ref) => {
@@ -63,8 +54,8 @@ const PageFlip = () => {
   return (
     <>
       <HTMLFlipBook
-        width={30}
-        height={50}
+        width={300}
+        height={500}
         size="stretch"
         minWidth={315}
         maxWidth={100}
@@ -79,11 +70,10 @@ const PageFlip = () => {
         className="demo-book"
         ref={flipBook}
       >
-        <PageCover>BOOK TITLE</PageCover>
+        <PageCover></PageCover>
         <Page number={1}>Lorem ipsum...</Page>
         <Page number={2}>Lorem ipsum...</Page>
-        {/* ... */}
-        <PageCover>THE END</PageCover>
+        <EndPage></EndPage>
       </HTMLFlipBook>
       <div>
         <div>

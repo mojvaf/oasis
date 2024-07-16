@@ -3,6 +3,15 @@ import HTMLFlipBook from "react-pageflip";
 import Button from "../../ui/Button";
 import PageCover from "./PageCover";
 import EndPage from "./EndPage";
+import styled from "styled-components";
+
+const StyledFlip = styled.div`
+  height: 52vh;
+  display: "flex";
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
 
 // eslint-disable-next-line react/display-name
 const Page = React.forwardRef((props, ref) => {
@@ -53,28 +62,30 @@ const PageFlip = () => {
 
   return (
     <>
-      <HTMLFlipBook
-        width={300}
-        height={500}
-        size="stretch"
-        minWidth={315}
-        maxWidth={100}
-        minHeight={400}
-        maxHeight={153}
-        maxShadowOpacity={0.5}
-        showCover={true}
-        mobileScrollSupport={true}
-        onFlip={onPage}
-        onChangeOrientation={onChangeOrientation}
-        onChangeState={onChangeState}
-        className="demo-book"
-        ref={flipBook}
-      >
-        <PageCover></PageCover>
-        <Page number={1}>Lorem ipsum...</Page>
-        <Page number={2}>Lorem ipsum...</Page>
-        <EndPage></EndPage>
-      </HTMLFlipBook>
+      <StyledFlip>
+        <HTMLFlipBook
+          width={300}
+          height={400}
+          size="stretch"
+          minWidth={315}
+          maxWidth={100}
+          minHeight={400}
+          maxHeight={153}
+          maxShadowOpacity={0.5}
+          showCover={true}
+          mobileScrollSupport={true}
+          onFlip={onPage}
+          onChangeOrientation={onChangeOrientation}
+          onChangeState={onChangeState}
+          className="demo-book"
+          ref={flipBook}
+        >
+          <PageCover></PageCover>
+          <Page number={1}>Lorem ipsum...</Page>
+          <Page number={2}>Lorem ipsum...</Page>
+          <EndPage></EndPage>
+        </HTMLFlipBook>
+      </StyledFlip>
       <div>
         <div>
           <Button type="button" onClick={prevButtonClick}>

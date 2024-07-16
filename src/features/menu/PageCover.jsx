@@ -4,10 +4,16 @@ import { useDarkMode } from "../../context/DarkModeContext";
 
 const StyledCoverPage = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
+  justify-content: center;
+  align-items: baseline;
   background-color: var(--color-grey-400);
+  position: relative;
+  img {
+    position: absolute;
+    top: 20px;
+    left: 20%;
+  }
 `;
 
 // eslint-disable-next-line react/display-name

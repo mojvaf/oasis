@@ -4,6 +4,8 @@ import Button from "../../ui/Button";
 import PageCover from "./PageCover";
 import EndPage from "./EndPage";
 import Page from "./Page";
+import { useMenu } from "./useMenu.js";
+
 import styled from "styled-components";
 
 const StyledFlip = styled.div`
@@ -20,6 +22,7 @@ const PageFlip = () => {
   const [orientation, setOrientation] = useState("");
   const [state, setState] = useState("");
   const flipBook = useRef(null);
+  const { isLoading, data } = useMenu();
 
   useEffect(() => {
     if (flipBook.current) {
@@ -47,6 +50,8 @@ const PageFlip = () => {
     setState(e.data);
   };
 
+  console.log(data);
+
   return (
     <>
       <StyledFlip>
@@ -68,8 +73,10 @@ const PageFlip = () => {
           ref={flipBook}
         >
           <PageCover></PageCover>
-          <Page number={1}>Lorem ipsum...</Page>
+          <Page number={1}></Page>
           <Page number={2}>Lorem ipsum...</Page>
+          <Page number={3}>Lorem ipsum...</Page>
+          <Page number={4}>Lorem ipsum...</Page>
           <EndPage></EndPage>
         </HTMLFlipBook>
       </StyledFlip>

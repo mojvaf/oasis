@@ -4,9 +4,11 @@ import Button from "../../ui/Button";
 import PageCover from "./PageCover";
 import EndPage from "./EndPage";
 import Page from "./Page";
-import { useMenu } from "./useMenu.js";
-
 import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
+import { getMenus } from "../../services/apiMenus";
+import Spinner from "../../ui/Spinner";
+import { MenuRow } from "./MenuRow";
 
 const StyledFlip = styled.div`
   height: 52vh;
@@ -22,7 +24,15 @@ const PageFlip = () => {
   const [orientation, setOrientation] = useState("");
   const [state, setState] = useState("");
   const flipBook = useRef(null);
-  const { isLoading, data } = useMenu();
+
+  const {
+    isLoading,
+    error,
+    data: menus,
+  } = useQuery({
+    queryKey: ["menus"],
+    queryFn: getMenus,
+  });
 
   useEffect(() => {
     if (flipBook.current) {
@@ -50,7 +60,7 @@ const PageFlip = () => {
     setState(e.data);
   };
 
-  console.log(data);
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -73,7 +83,11 @@ const PageFlip = () => {
           ref={flipBook}
         >
           <PageCover></PageCover>
-          <Page number={1}></Page>
+          <Page number={1}>
+            {menus.map((menu) => (
+              <MenuRow key={menu.id} menu={menu} />
+            ))}
+          </Page>
           <Page number={2}>Lorem ipsum...</Page>
           <Page number={3}>Lorem ipsum...</Page>
           <Page number={4}>Lorem ipsum...</Page>

@@ -1,11 +1,11 @@
 import supabase, { supabaseUrl } from "./supabase";
 
-export async function getMenu() {
-  // Make a request
+export async function getMenus() {
   const { data, error } = await supabase.from("menus").select("*");
 
   if (error) {
-    console.error(error);
-    throw new Error("menu could not be loaded");
+    console.error("");
+    throw new Error("Menus could not find!");
   }
+  return data;
 }

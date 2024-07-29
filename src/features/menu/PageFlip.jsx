@@ -62,6 +62,11 @@ const PageFlip = () => {
 
   if (isLoading) return <Spinner />;
 
+  const filteredMain = menus.filter((item) => item.type === "main");
+  const filteredAppetizer = menus.filter((item) => item.type === "appetizers");
+  const filteredDesserts = menus.filter((item) => item.type === "desserts");
+  const filteredBeverages = menus.filter((item) => item.type === "beverages");
+
   return (
     <>
       <StyledFlip>
@@ -83,14 +88,28 @@ const PageFlip = () => {
           ref={flipBook}
         >
           <PageCover></PageCover>
-          <Page number={1}>
-            {menus.map((menu) => (
+
+          <Page number={"Appetizers"}>
+            {filteredAppetizer.map((menu) => (
               <MenuRow key={menu.id} menu={menu} />
             ))}
           </Page>
-          <Page number={2}>Lorem ipsum...</Page>
-          <Page number={3}>Lorem ipsum...</Page>
-          <Page number={4}>Lorem ipsum...</Page>
+          <Page number={"Main"}>
+            {filteredMain.map((menu) => (
+              <MenuRow key={menu.id} menu={menu} />
+            ))}
+          </Page>
+          <Page number={"Desserts"}>
+            {" "}
+            {filteredDesserts.map((menu) => (
+              <MenuRow key={menu.id} menu={menu} />
+            ))}
+          </Page>
+          <Page number={"Beverages"}>
+            {filteredBeverages.map((menu) => (
+              <MenuRow key={menu.id} menu={menu} />
+            ))}
+          </Page>
           <EndPage></EndPage>
         </HTMLFlipBook>
       </StyledFlip>

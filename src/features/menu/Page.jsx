@@ -41,7 +41,7 @@ const Page = React.forwardRef((props, ref) => {
   return (
     <PageContainer ref={ref}>
       <PageContent>
-        <PageHeader>Page header - {props.number}</PageHeader>
+        <PageHeader>{props.number}</PageHeader>
         {props.image && (
           <PageImage>
             <img src={props.image} alt={`Page ${props.number}`} />

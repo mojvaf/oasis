@@ -1,10 +1,28 @@
 import React from "react";
 import styled from "styled-components";
-import Table from "../../ui/Table";
+import Row from "../../ui/Row";
+
+const capitalizeName = (name) => {
+  return name.replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
+const MenuTable = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 400px;
+  gap: 2rem;
+  margin-bottom: 1rem;
+`;
+
+const ColTable = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
 const Img = styled.img`
   display: block;
-  width: 9.4rem;
+  width: 5.4rem;
   object-fit: cover;
   object-position: center;
 `;
@@ -21,18 +39,19 @@ const Price = styled.div`
   font-weight: 600;
 `;
 
-const Discount = styled.div`
-  font-family: "Sono";
-  font-weight: 500;
-  color: var(--color-green-700);
-`;
-
 export const MenuRow = ({ menu }) => {
-  const { image } = menu;
+  const { image, name, ingredients, price } = menu;
 
   return (
-    <Table>
-      <Img src={image} />
-    </Table>
+    <MenuTable>
+      <Img src={image} alt="food" />
+      <Row>
+        <ColTable>
+          <Menu>{capitalizeName(name)}</Menu>
+          <div>$ {price}</div>
+        </ColTable>
+        <Row>{ingredients}</Row>
+      </Row>
+    </MenuTable>
   );
 };

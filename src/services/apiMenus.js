@@ -9,3 +9,12 @@ export async function getMenus() {
   }
   return data;
 }
+
+export async function deleteMenu(id) {
+  const { data, error } = await supabase.from("menus").delete().eq("id", id);
+  if (error) {
+    console.error("");
+    throw new Error("Menus could not be deleted!");
+  }
+  return data;
+}

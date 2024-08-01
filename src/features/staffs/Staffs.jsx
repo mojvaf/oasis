@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getStaffs } from "../../services/apiStaffs";
+import styled from "styled-components";
+import Staff from "./staff";
+import Shifts from "./Shifts";
 import Spinner from "../../ui/Spinner";
+
+const StyledStaffsLayout = styled.div`
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  gap: 2.4rem;
+`;
 
 const Staffs = () => {
   const {
@@ -15,14 +24,10 @@ const Staffs = () => {
 
   if (isLoading) return <Spinner />;
   return (
-    <div>
-      {staffs.map((it) => (
-        <div key={it.id}>
-          {it.name}
-          <img src={it.image} />
-        </div>
-      ))}
-    </div>
+    <StyledStaffsLayout>
+      <Staff staffs={staffs} />
+      <Shifts />
+    </StyledStaffsLayout>
   );
 };
 

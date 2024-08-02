@@ -1,13 +1,13 @@
+import Spinner from "../../ui/Spinner";
 import { StyledStaffBox, StyledCircularImage } from "./StaffBox";
 
-const staff = ({ staffs }) => {
-  console.log(staffs);
+const staff = ({ staffs, isLoading }) => {
   return (
     <StyledStaffBox>
       {staffs.map((st) => (
         <div key={st.id}>
           <p>{st.name}</p>
-          <StyledCircularImage src={st.image} />
+          {isLoading ? <Spinner /> : <StyledCircularImage src={st.image} />}
         </div>
       ))}
     </StyledStaffBox>

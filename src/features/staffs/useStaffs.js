@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getStaffs } from "../../services/apiStaffs";
 
-const Staffs = () => {
+export const useStaffs = () => {
   const {
     isLoading,
     data: staffs,

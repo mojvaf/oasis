@@ -21,7 +21,4 @@ export const StyledCircularImage = styled.img`
   object-fit: cover;
   border: 2px solid var(--color-grey-200);
   transition: transform 0.3s ease, background-color 0.5s ease-in-out;
-  &:hover {
-    transform: scale(1.1);
-  }
 `;

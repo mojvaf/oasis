@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Staff from "./staff";
+import Staff from "./Staff";
 import Shifts from "./Shifts";
 import Spinner from "../../ui/Spinner";
 import { useStaffs } from "./useStaffs";

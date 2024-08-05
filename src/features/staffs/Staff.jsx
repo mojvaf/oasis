@@ -1,17 +1,25 @@
+import React, { useState } from "react";
 import Spinner from "../../ui/Spinner";
 import { StyledStaffBox, StyledCircularImage } from "./StaffBox";
+import styled from "styled-components";
 
-const staff = ({ staffs, isLoading }) => {
+const StyledBorder = styled.div`
+  border: 1px solid var(--color-grey-600);
+`;
+
+const Staff = ({ staffs, isLoading }) => {
+  const [draggingItem, setDraggingItem] = useState(null);
+
   return (
     <StyledStaffBox>
       {staffs.map((st) => (
-        <div key={st.id}>
+        <StyledBorder key={st.id} draggable>
           <p>{st.name}</p>
           {isLoading ? <Spinner /> : <StyledCircularImage src={st.image} />}
-        </div>
+        </StyledBorder>
       ))}
     </StyledStaffBox>
   );
 };
 
-export default staff;
+export default Staff;

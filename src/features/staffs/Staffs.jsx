@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Staff from "./Staff";
 import Shifts from "./Shifts";
@@ -13,12 +13,17 @@ const StyledStaffsLayout = styled.div`
 
 const Staffs = () => {
   const { isLoading, staffs } = useStaffs();
+  const [draggingItem, setDraggingItem] = useState(null);
 
   if (isLoading) return <Spinner />;
   return (
     <StyledStaffsLayout>
-      <Staff staffs={staffs} isLoading={isLoading} />
-      <Shifts />
+      <Staff
+        staffs={staffs}
+        isLoading={isLoading}
+        setDraggingItem={setDraggingItem}
+      />
+      <Shifts draggingItem={draggingItem} setDraggingItem={setDraggingItem} />
     </StyledStaffsLayout>
   );
 };

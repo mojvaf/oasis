@@ -1,29 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import Spinner from "../../ui/Spinner";
 import { StyledStaffBox, StyledCircularImage } from "./StaffBox";
 import styled from "styled-components";
-import { useCreateStaff } from "./useCreateStaffs";
 
 const StyledBorder = styled.div`
   border: 1px solid var(--color-grey-600);
 `;
 
 const Staff = ({ staffs, isLoading, setDraggingItem }) => {
-  const { isCreating, createStaff } = useCreateStaff();
+  const handleDragStart = (item) => {
+    setDraggingItem(item);
+  };
 
-  function handleOnDrag(e) {}
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = () => {
+    setDraggingItem(null);
+  };
 
   return (
     <StyledStaffBox>
-      {staffs.map((st) => (
+      {staffs.map((item) => (
         <StyledBorder
-          key={st.id}
+          key={item.id}
           draggable
-          onDragStart={() => setDraggingItem(st.id)}
-          onDragEnd={() => setDraggingItem(null)}
+          onDragStart={() => handleDragStart(item)}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
         >
-          <p>{st.name}</p>
-          {isLoading ? <Spinner /> : <StyledCircularImage src={st.image} />}
+          <p>{item.name}</p>
+          {isLoading ? <Spinner /> : <StyledCircularImage src={item.image} />}
         </StyledBorder>
       ))}
     </StyledStaffBox>

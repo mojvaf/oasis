@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import Shift from "./Shift";
 import styled from "styled-components";
+import { useCreateStaff } from "./useCreateStaffs";
+import Row from "../../ui/Row";
 
-const StyledDropArea = styled.div`
-  width: 100%;
-  height: 200px;
-  background-color: aquamarine;
-  opacity: 1;
-  transition: all 0.3s ease-in-out;
+const StyledText = styled.div`
+  font-family: "Sono";
+  font-weight: 400;
+  margin: 5px;
+`;
+const StyledItem = styled.div`
+  border: 1px solid;
+  padding: 8px;
+  margin: 3px;
+  cursor: move;
 `;
 
 const StyledArea = styled.div`
@@ -19,24 +24,38 @@ const StyledPart = styled.div`
   opacity: 0;
 `;
 const Shifts = ({ draggingItem, setDraggingItem }) => {
-  const [showDrop, setShowDrop] = useState(false);
+  const { isCreating, createStaff } = useCreateStaff();
+  const [droppedItems, setDroppedItems] = useState([]);
+
+  const handleDragStart = (item) => {
+    setDraggingItem(item);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
 
   const handleDrop = () => {
-    console.log(`Dropped item with id: ${draggingItem}`);
-    // Handle the drop logic here, such as updating state or making an API call
-    setShowDrop(false);
-    setDraggingItem(null);
+    if (draggingItem) {
+      setDroppedItems([...droppedItems, draggingItem]);
+      setDraggingItem(null);
+    }
   };
 
   return (
-    <StyledArea
-      onDragEnter={() => setShowDrop(true)}
-      onDragOver={(e) => e.preventDefault()}
-      onDragLeave={() => setShowDrop(false)}
-      onDrop={handleDrop}
-    >
-      {showDrop ? <StyledDropArea /> : <StyledPart />}
-      <p>drop part</p>
+    <StyledArea onDragOver={handleDragOver} onDrop={handleDrop}>
+      <StyledText>Shifts</StyledText>
+      <Row>
+        {droppedItems.map((item) => (
+          <StyledItem
+            key={item.id}
+            draggable
+            onDragStart={() => handleDragStart(item)}
+          >
+            {item.name}
+          </StyledItem>
+        ))}
+      </Row>
     </StyledArea>
   );
 };

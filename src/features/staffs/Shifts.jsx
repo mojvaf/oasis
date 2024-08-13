@@ -1,59 +1,87 @@
 import React, { useState } from "react";
+import { format, addDays, startOfWeek } from "date-fns";
 import styled from "styled-components";
-import { useCreateStaff } from "./useCreateStaffs";
-import Row from "../../ui/Row";
+
+const StyledArea = styled.div`
+  border: 2px dashed #ccc;
+  padding: 16px;
+  min-height: 100px;
+  text-align: center;
+  margin-bottom: 16px;
+`;
 
 const StyledText = styled.div`
-  font-family: "Sono";
-  font-weight: 400;
-  margin: 5px;
+  font-weight: bold;
+  margin-bottom: 8px;
 `;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
 const StyledItem = styled.div`
-  border: 1px solid;
+  border: 1px solid #ccc;
   padding: 8px;
-  margin: 3px;
+  margin-bottom: 4px;
   cursor: move;
 `;
 
-const StyledArea = styled.div`
-  width: 100%;
-  height: 200px;
-  border: 2px dashed #ccc;
-`;
-const StyledPart = styled.div`
-  opacity: 0;
-`;
 const Shifts = ({ draggingItem, setDraggingItem }) => {
-  const { isCreating, createStaff } = useCreateStaff();
-  const [droppedItems, setDroppedItems] = useState([]);
+  const [droppedItems, setDroppedItems] = useState({});
 
-  const handleDragStart = (item) => {
-    setDraggingItem(item);
-  };
+  const daysOfWeek = Array.from({ length: 7 }, (_, i) =>
+    format(addDays(startOfWeek(new Date()), i), "yyyy-MM-dd")
+  );
 
   const handleDragOver = (e) => {
     e.preventDefault();
   };
 
-  const handleDrop = () => {
+  const handleDrop = (day) => {
     if (draggingItem) {
-      setDroppedItems([...droppedItems, draggingItem]);
+      setDroppedItems((prev) => ({
+        ...prev,
+        [day]: [...(prev[day] || []), draggingItem],
+      }));
       setDraggingItem(null);
     }
   };
 
+  const handleDragStart = (item) => {
+    setDraggingItem(item);
+  };
+
   return (
-    <StyledArea onDragOver={handleDragOver} onDrop={handleDrop}>
+    <StyledArea>
       <StyledText>Shifts</StyledText>
       <Row>
-        {droppedItems.map((item) => (
-          <StyledItem
-            key={item.id}
-            draggable
-            onDragStart={() => handleDragStart(item)}
+        {daysOfWeek.map((day) => (
+          <div
+            key={day}
+            onDragOver={handleDragOver}
+            onDrop={() => handleDrop(day)}
+            style={{
+              border: "1px solid #ccc",
+              padding: "8px",
+              margin: "0 4px",
+              minWidth: "100px",
+              minHeight: "100px",
+            }}
           >
-            {item.name}
-          </StyledItem>
+            {format(new Date(day), "eee, MMM d")}
+            <ul>
+              {(droppedItems[day] || []).map((item) => (
+                <StyledItem
+                  key={item.id}
+                  draggable
+                  onDragStart={() => handleDragStart(item)}
+                >
+                  {item.name} {/* Adjust based on your data structure */}
+                </StyledItem>
+              ))}
+            </ul>
+          </div>
         ))}
       </Row>
     </StyledArea>

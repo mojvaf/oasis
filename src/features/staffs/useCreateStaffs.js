@@ -8,7 +8,7 @@ export function useCreateStaff() {
   const { isLoading: isCreating, mutate: createStaff } = useMutation({
     mutationFn: (newStaff) => createStaffs(newStaff),
     onSuccess: () => {
-      toast.success("Staff successfully ");
+      toast.success("Staff successfully added");
       queryClient.invalidateQueries({
         queryKey: ["staffs"],
       });

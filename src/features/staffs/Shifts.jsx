@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { format, addDays, startOfWeek } from "date-fns";
 import styled from "styled-components";
+import toast from "react-hot-toast";
+import { useShifts } from "./useShifts";
 
 const StyledArea = styled.div`
-  border: 2px dashed #ccc;
+  border: 2px solid var(--color-grey-200);
+  border-radius: var(--border-radius-md);
   padding: 16px;
   min-height: 100px;
   text-align: center;
@@ -17,18 +20,27 @@ const StyledText = styled.div`
 
 const Row = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
 `;
 
 const StyledItem = styled.div`
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-grey-100);
   padding: 8px;
   margin-bottom: 4px;
   cursor: move;
 `;
 
+const StyledDays = styled.div`
+  border: 1px dashed var(--color-grey-600);
+  padding: 8px;
+  margin: 0 4px;
+  min-width: 100px;
+  min-height: 100px;
+`;
+
 const Shifts = ({ draggingItem, setDraggingItem }) => {
   const [droppedItems, setDroppedItems] = useState({});
+  const { isLoading, shifts } = useShifts();
 
   const daysOfWeek = Array.from({ length: 7 }, (_, i) =>
     format(addDays(startOfWeek(new Date()), i), "yyyy-MM-dd")
@@ -44,6 +56,7 @@ const Shifts = ({ draggingItem, setDraggingItem }) => {
         ...prev,
         [day]: [...(prev[day] || []), draggingItem],
       }));
+      toast.success("The staff has been added to the shift.");
       setDraggingItem(null);
     }
   };
@@ -57,17 +70,10 @@ const Shifts = ({ draggingItem, setDraggingItem }) => {
       <StyledText>Shifts</StyledText>
       <Row>
         {daysOfWeek.map((day) => (
-          <div
+          <StyledDays
             key={day}
             onDragOver={handleDragOver}
             onDrop={() => handleDrop(day)}
-            style={{
-              border: "1px solid #ccc",
-              padding: "8px",
-              margin: "0 4px",
-              minWidth: "100px",
-              minHeight: "100px",
-            }}
           >
             {format(new Date(day), "eee, MMM d")}
             <ul>
@@ -77,11 +83,11 @@ const Shifts = ({ draggingItem, setDraggingItem }) => {
                   draggable
                   onDragStart={() => handleDragStart(item)}
                 >
-                  {item.name} {/* Adjust based on your data structure */}
+                  {item.name}
                 </StyledItem>
               ))}
             </ul>
-          </div>
+          </StyledDays>
         ))}
       </Row>
     </StyledArea>

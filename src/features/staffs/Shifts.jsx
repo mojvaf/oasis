@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { format, addDays, startOfWeek } from "date-fns";
+import { format, addDays, startOfWeek, parseISO } from "date-fns";
 import styled from "styled-components";
 import toast from "react-hot-toast";
 import { useShifts } from "./useShifts";
@@ -24,10 +24,9 @@ const Row = styled.div`
 `;
 
 const StyledItem = styled.div`
-  border: 1px solid var(--color-grey-100);
+  border-bottom: 1px solid var(--color-grey-400);
   padding: 8px;
   margin-bottom: 4px;
-  cursor: move;
 `;
 
 const StyledDays = styled.div`
@@ -41,7 +40,7 @@ const StyledDays = styled.div`
 const Shifts = ({ draggingItem, setDraggingItem }) => {
   const [droppedItems, setDroppedItems] = useState({});
   const { isLoading, shifts } = useShifts();
-
+  console.log(draggingItem);
   const daysOfWeek = Array.from({ length: 7 }, (_, i) =>
     format(addDays(startOfWeek(new Date()), i), "yyyy-MM-dd")
   );
@@ -50,19 +49,50 @@ const Shifts = ({ draggingItem, setDraggingItem }) => {
     e.preventDefault();
   };
 
-  const handleDrop = (day) => {
-    if (draggingItem) {
-      setDroppedItems((prev) => ({
-        ...prev,
-        [day]: [...(prev[day] || []), draggingItem],
-      }));
-      toast.success("The staff has been added to the shift.");
-      setDraggingItem(null);
-    }
-  };
+  const handleDrop = (dateString) => {
+    const dayName = format(parseISO(dateString), "EEEE");
 
-  const handleDragStart = (item) => {
-    setDraggingItem(item);
+    if (draggingItem && draggingItem.availability) {
+      const availableDays = draggingItem.availability
+        .split(",")
+        .map((d) => d.trim());
+
+      // Check if the dayName is in the availableDays array
+      if (availableDays.includes(dayName)) {
+        // Check if draggingItem is already in the list for the specified day
+        setDroppedItems((prev) => {
+          const currentItems = prev[dateString] || [];
+
+          // Check if draggingItem already exists in the list
+          const itemAlreadyAdded = currentItems.some(
+            (item) => item.id === draggingItem.id
+          );
+
+          if (itemAlreadyAdded) {
+            toast.error(
+              "This staff is already assigned to the shift for this day."
+            );
+            return prev;
+          } else {
+            toast.success("The staff has been added to the shift.");
+          }
+
+          return {
+            ...prev,
+            [dateString]: [...currentItems, draggingItem],
+          };
+        });
+      } else {
+        toast.error(
+          "The staff cannot be added to the shift due to availability issues."
+        );
+      }
+    } else {
+      toast.error(
+        "Unable to add the staff due to missing availability information."
+      );
+    }
+    setDraggingItem(null);
   };
 
   return (
@@ -78,12 +108,10 @@ const Shifts = ({ draggingItem, setDraggingItem }) => {
             {format(new Date(day), "eee, MMM d")}
             <ul>
               {(droppedItems[day] || []).map((item) => (
-                <StyledItem
-                  key={item.id}
-                  draggable
-                  onDragStart={() => handleDragStart(item)}
-                >
-                  {item.name}
+                <StyledItem key={item.id}>
+                  {item.name}&apos;s shift
+                  <div>starts at: {item.startShift} AM</div>
+                  <div>ends at: {item.endShift}PM</div>
                 </StyledItem>
               ))}
             </ul>

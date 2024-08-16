@@ -1,5 +1,15 @@
 import supabase, { supabaseUrl } from "./supabase";
 
+/*interface Shift {
+  id: n
+  created_at
+  availability
+  endShift:n
+  startShift:n
+  name
+  image
+}*/
+
 export async function getShifts() {
   const { data, error } = await supabase.from("shifts").select("*");
 

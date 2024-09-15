@@ -6,7 +6,7 @@ import Staffs from "../features/staffs/Staffs";
 export const Staff = () => {
   return (
     <Row>
-      <Heading as="h1">All staffs</Heading>
+      <Heading as="h1">All staffs and shifts</Heading>
       <Staffs />
     </Row>
   );

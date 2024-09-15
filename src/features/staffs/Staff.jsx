@@ -2,6 +2,7 @@ import React from "react";
 import Spinner from "../../ui/Spinner";
 import { StyledStaffBox, StyledCircularImage } from "./StaffBox";
 import styled from "styled-components";
+import { useDeleteStaff } from "./useDeleteStaffs";
 
 const StyledBorder = styled.div`
   border: 1px solid var(--color-grey-600);
@@ -20,6 +21,8 @@ const Staff = ({ staffs, isLoading, setDraggingItem }) => {
     setDraggingItem(null);
   };
 
+  const { isDeleting, deleteStaff } = useDeleteStaff();
+
   return (
     <StyledStaffBox>
       {staffs.map((item) => (
@@ -31,6 +34,9 @@ const Staff = ({ staffs, isLoading, setDraggingItem }) => {
           onDrop={handleDrop}
         >
           <p>{item.name}</p>
+          <button onClick={() => deleteStaff(item.id)} disabled={isDeleting}>
+            Delete
+          </button>
           {isLoading ? <Spinner /> : <StyledCircularImage src={item.image} />}
         </StyledBorder>
       ))}

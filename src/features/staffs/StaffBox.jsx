@@ -5,10 +5,8 @@ export const StyledStaffBox = styled.div`
   border: 1px solid var(--color-grey-200);
   border-radius: var(--border-radius-md);
   padding: 3.2rem;
-  justify-self: end;
+  justify-content: space-around;
   display: flex;
-  gap: 3rem;
-
   p {
     text-align: center;
   }

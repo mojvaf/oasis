@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Form from "../../ui/Form";
+import Input from "../../ui/Input";
 
 export const Textarea = styled.textarea`
   padding: 0.8rem 1.2rem;
@@ -48,7 +49,26 @@ const Error = styled.span`
 `;
 
 const CreateStaffForm = () => {
-  return <Form></Form>;
+  return (
+    <Form>
+      <FormRow>
+        <Label htmlFor="name">Staff Name</Label>
+        <Input type="text" id="name" />
+      </FormRow>
+      <FormRow>
+        <Label htmlFor="availability">Availability</Label>
+        <Input type="text" id="availability" />
+      </FormRow>
+      <FormRow>
+        <Label htmlFor="startShift">Start Shift</Label>
+        <Input type="text" id="startShift" />
+      </FormRow>
+      <FormRow>
+        <Label htmlFor="endShift">End Shift</Label>
+        <Input type="text" id="endShift" />
+      </FormRow>
+    </Form>
+  );
 };
 
 export default CreateStaffForm;

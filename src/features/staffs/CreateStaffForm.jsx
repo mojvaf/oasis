@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
+import { useForm } from "react-hook-form";
+import Button from "../../ui/Button";
+import { useCreateStaff } from "./useCreateStaffs";
 
 export const Textarea = styled.textarea`
   padding: 0.8rem 1.2rem;
@@ -49,23 +52,61 @@ const Error = styled.span`
 `;
 
 const CreateStaffForm = () => {
+  const { isCreating, createStaff } = useCreateStaff();
+
+  const { register, handleSubmit, reset } = useForm();
+
+  function onSubmit(data) {
+    createStaff(data);
+  }
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow>
         <Label htmlFor="name">Staff Name</Label>
-        <Input type="text" id="name" />
+        <Input
+          type="text"
+          id="name"
+          {...register("name", { required: "This field is required" })}
+        />
       </FormRow>
       <FormRow>
         <Label htmlFor="availability">Availability</Label>
-        <Input type="text" id="availability" />
+        <Input
+          type="text"
+          id="availability"
+          {...register("availability", { required: "This field is required" })}
+        />
       </FormRow>
       <FormRow>
         <Label htmlFor="startShift">Start Shift</Label>
-        <Input type="text" id="startShift" />
+        <Input
+          type="number"
+          id="startShift"
+          {...register("startShift", {
+            required: "This field is required",
+            min: {
+              value: 8,
+              message: "shift should be at least start at 8",
+            },
+          })}
+        />
       </FormRow>
       <FormRow>
         <Label htmlFor="endShift">End Shift</Label>
-        <Input type="text" id="endShift" />
+        <Input
+          type="number"
+          id="endShift"
+          {...register("endShift", {
+            required: "This field is required",
+            min: {
+              value: 8,
+              message: "shift should be at least end at 12",
+            },
+          })}
+        />
+      </FormRow>
+      <FormRow>
+        <Button>Create a new staff</Button>
       </FormRow>
     </Form>
   );

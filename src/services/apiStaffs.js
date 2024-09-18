@@ -15,7 +15,7 @@ export async function createStaffs(newStaff) {
   const { data, error } = await supabase.from("staffs").insert([newStaff]);
   if (error) {
     console.error(error);
-    throw new Error("Staffs could not be loaded");
+    throw new Error("Staffs could not be created");
   }
 
   return data;

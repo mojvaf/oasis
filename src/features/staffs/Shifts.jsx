@@ -40,7 +40,7 @@ const StyledDays = styled.div`
 const Shifts = ({ draggingItem, setDraggingItem }) => {
   const [droppedItems, setDroppedItems] = useState({});
   const { isLoading, shifts } = useShifts();
-  console.log(draggingItem);
+
   const daysOfWeek = Array.from({ length: 7 }, (_, i) =>
     format(addDays(startOfWeek(new Date()), i), "yyyy-MM-dd")
   );

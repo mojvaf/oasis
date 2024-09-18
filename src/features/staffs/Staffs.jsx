@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import Staff from "./Staff";
 import Shifts from "./Shifts";
 import Spinner from "../../ui/Spinner";

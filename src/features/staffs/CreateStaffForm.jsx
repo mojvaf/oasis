@@ -5,6 +5,8 @@ import Input from "../../ui/Input";
 import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
 import { useCreateStaff } from "./useCreateStaffs";
+import FormRow from "../../ui/FormRow";
+import { parse, isValid, getDay } from "date-fns";
 
 export const Textarea = styled.textarea`
   padding: 0.8rem 1.2rem;
@@ -14,32 +16,6 @@ export const Textarea = styled.textarea`
   box-shadow: var(--shadow-sm);
   width: 100%;
   height: 8rem;
-`;
-
-const FormRow = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
-  padding: 1.2rem 0;
-
-  &:first-child {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-  }
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-
-  &:has(button) {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1.2rem;
-  }
 `;
 
 const Label = styled.label`
@@ -54,31 +30,37 @@ const Error = styled.span`
 const CreateStaffForm = () => {
   const { isCreating, createStaff } = useCreateStaff();
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, getValues, formState } = useForm();
+  const { errors } = formState;
+  console.log(errors);
 
   function onSubmit(data) {
     createStaff(data);
   }
+
+  function onError(err) {
+    console.log(err);
+  }
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow>
-        <Label htmlFor="name">Staff Name</Label>
+    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+      <FormRow label="name" error={errors?.name?.message}>
         <Input
           type="text"
           id="name"
           {...register("name", { required: "This field is required" })}
         />
       </FormRow>
-      <FormRow>
-        <Label htmlFor="availability">Availability</Label>
+      <FormRow label={"availability"} error={errors?.availability?.message}>
         <Input
           type="text"
           id="availability"
-          {...register("availability", { required: "This field is required" })}
+          {...register("availability", {
+            required: "This field is required",
+            validate: (value) => value,
+          })}
         />
       </FormRow>
-      <FormRow>
-        <Label htmlFor="startShift">Start Shift</Label>
+      <FormRow label={"startShift"} error={errors?.startShift?.message}>
         <Input
           type="number"
           id="startShift"
@@ -86,20 +68,21 @@ const CreateStaffForm = () => {
             required: "This field is required",
             min: {
               value: 8,
-              message: "shift should be at least start at 8",
+              message: "shift should start at 8 am or later",
             },
           })}
         />
       </FormRow>
-      <FormRow>
-        <Label htmlFor="endShift">End Shift</Label>
+      <FormRow label={"endShift"} error={errors?.endShift?.message}>
         <Input
           type="number"
           id="endShift"
           {...register("endShift", {
             required: "This field is required",
+            validate: (value) =>
+              value < getValues.startShift || "add more hours",
             min: {
-              value: 8,
+              value: 12,
               message: "shift should be at least end at 12",
             },
           })}

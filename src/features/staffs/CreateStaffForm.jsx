@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
 import { useCreateStaff } from "./useCreateStaffs";
 import FormRow from "../../ui/FormRow";
+import FileInput from "../../ui/FileInput";
 import { parse, isValid, getDay } from "date-fns";
 
 export const Textarea = styled.textarea`
@@ -32,10 +33,10 @@ const CreateStaffForm = () => {
 
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
-  console.log(errors);
 
   function onSubmit(data) {
-    createStaff(data);
+    createStaff({ ...data, image: data.image[0] });
+    reset();
   }
 
   function onError(err) {
@@ -56,7 +57,7 @@ const CreateStaffForm = () => {
           id="availability"
           {...register("availability", {
             required: "This field is required",
-            validate: (value) => value,
+            //validate: (value) => value,
           })}
         />
       </FormRow>
@@ -79,13 +80,20 @@ const CreateStaffForm = () => {
           id="endShift"
           {...register("endShift", {
             required: "This field is required",
-            validate: (value) =>
-              value < getValues.startShift || "add more hours",
-            min: {
-              value: 12,
-              message: "shift should be at least end at 12",
-            },
+            //validate: (value) =>
+            //  value < getValues.startShift || "add more hours",
+            // min: {
+            // value: 12,
+            // message: "shift should be at least end at 12",
+            //},
           })}
+        />
+      </FormRow>
+      <FormRow error={errors?.image?.message}>
+        <FileInput
+          id="image"
+          accept="image/*"
+          {...register("image", { required: "This field is required" })}
         />
       </FormRow>
       <FormRow>
